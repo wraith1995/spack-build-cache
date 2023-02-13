@@ -24,7 +24,7 @@ jobs:
 
       - name: Build Spack Package
         uses: vsoch/spack-package-action/package@develop
-        id: package
+        id: tiramisu
         with:
           package: ${{ env.package }}
           token: ${{ secrets.GITHUB_TOKEN }}

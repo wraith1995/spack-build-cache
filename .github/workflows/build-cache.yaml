@@ -16,14 +16,6 @@ jobs:
     outputs:
       packages: ${{ steps.choose.outputs.packages }}
 
-    name: Randomly Choose Packages
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Generate Package Matrix
-        id: choose
-        run: pip install requests && python scripts/generate-matrix.py ${{ github.event_name }}
-
   build-binaries:
     runs-on: ubuntu-latest
     needs:
@@ -32,8 +24,6 @@ jobs:
       packages: write
     strategy:
       fail-fast: false
-      matrix:
-        package: ${{ fromJson(needs.prepare.outputs.packages) }}
 
     name: Build Package Binaries
     steps:
@@ -47,7 +37,7 @@ jobs:
         uses: vsoch/spack-package-action/package@develop
         id: package
         with:
-          package: ${{ matrix.package }}
+          package: tiramisu
           token: ${{ secrets.GITHUB_TOKEN }}
           deploy: ${{ github.event_name != 'pull_request' }}
 
